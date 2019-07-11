@@ -15,10 +15,10 @@ export default {
 }
 </script>
 
-// <style lang="less" scoped>
-// .box {
-//   width: 375px;
-//   height: 200px;
-//   background-color: #f40;
-// }
-// </style>
+<style lang="less" scoped>
+.box {
+  width: 375px;
+  height: 200px;
+  background-color: #f40;
+}
+</style>
