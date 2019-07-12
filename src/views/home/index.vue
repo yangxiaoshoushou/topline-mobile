@@ -1,8 +1,8 @@
 <template>
   <div>
     <div class="home">
-      <van-nav-bar title="首页" />
-      <van-tabs v-model="activeChannelIndex">
+      <van-nav-bar title="首页" fixed />
+      <van-tabs class="channel-tabs" v-model="activeChannelIndex">
           <van-tab title="标签 1">
           <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
           <van-list
@@ -67,9 +67,14 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.box {
-  width: 375px;
-  height: 200px;
-  background-color: #f40;
+.channel-tabs {
+  margin-bottom: 100px;
+}
+.channel-tabs /deep/ .van-tabs__wrap {
+  position: fixed;
+  top: 92px;
+}
+.channel-tabs /deep/ .van-tabs__content {
+  margin-top: 100px;
 }
 </style>
