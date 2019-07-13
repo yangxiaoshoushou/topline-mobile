@@ -65,6 +65,13 @@ export default {
           channels = data.channels
         }
       }
+      // 修改channles，将这个数据结构改为我们需要的
+      channels.forEach(item => {
+        item.articles = [] // 用来存当前的文章列表
+        item.downPullLoading = false // 用来控制当前频道的下拉刷新
+        item.upPullLoading = false // 用来控制当前频道的上拉加载更多
+        item.upPullFinished = false // 用来控制当前频道数据是否加载完毕
+      })
       this.channels = channels
     },
     onLoad () {
