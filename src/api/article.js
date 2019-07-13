@@ -2,9 +2,9 @@
 import request from '@/utils/request'
 
 export const getArticles = ({
-  channelId,
-  timestamp,
-  withTop
+  channelId, // 频道
+  timestamp, // 时间戳（用于分页）
+  withTop // 是否包含置顶
 }) => {
   return request({
     method: 'GET',
