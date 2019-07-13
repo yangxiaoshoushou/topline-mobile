@@ -84,10 +84,22 @@ export default {
     },
     // 上拉加载更多push数据
     async  onLoad () {
-      console.log('onLoad')
+      await this.$sleep(800)
       // 异步更新数据
       let data = []
       data = await this.loadArticles()
+
+      if (!data.pre_timestamp && !data.results.length) {
+        // 设置该频道数据已加载完毕，组件会自动给出提示，并且不再onLoad
+        this.activeChannel.upPullFinished = true
+
+        // 取消loading
+        this.activeChannel.upPullLoading = false
+
+        // 代码就不需要往后继续执行了
+        return
+      }
+
       // 解决初始化的时候没有最新推荐的问题（没有最新数据，那就加载上一次推荐数据）
       if (data.pre_timestamp && !data.results.length) {
         this.activeChannel.timestamp = data.pre_timestamp
