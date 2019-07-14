@@ -43,11 +43,11 @@
       </div>
       <van-grid class="channel-content" :gutter="10" clickable>
         <van-grid-item
-          v-for="value in 8"
-          :key="value"
-          text="文字">
+          v-for="item in recommendChannels"
+          :key="item.id"
+        >
           <div class="info">
-            <span class="text">文字</span>
+            <span class="text">{{item.name}}</span>
           </div>
         </van-grid-item>
       </van-grid>
@@ -76,6 +76,13 @@ export default {
   data () {
     return {
       allChannels: [] // 所有的频道列表
+    }
+  },
+  computed: {
+    // 过滤出不含用户频道列表的数据
+    recommendChannels () {
+      const duplicates = this.userChannels.map(item => item.id)
+      return this.allChannels.filter(item => !duplicates.includes(item.id))
     }
   },
   created () {
@@ -108,7 +115,7 @@ export default {
   }
   .channel-content {
     .text {
-      font-size: 28px;
+      font-size: 24px;
     }
     .active {
       color: red;
