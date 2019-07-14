@@ -34,7 +34,7 @@
       <!-- 频道管理组件 -->
       <HomeChannel
         v-model="isChannelShow"
-        :channels="channels"
+        :user-channels="channels"
         :active-index="activeChannelIndex"/>
     </div>
 </template>
