@@ -35,7 +35,7 @@
       <HomeChannel
         v-model="isChannelShow"
         :user-channels="channels"
-        :active-index="activeChannelIndex"/>
+        :active-index.sync="activeChannelIndex"/>
     </div>
 </template>
 
