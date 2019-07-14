@@ -8,7 +8,12 @@
             :key="channelItem.id"
             :title="channelItem.name"
           >
-          <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
+          <van-pull-refresh
+            v-model="channelItem.downPullLoading"
+            @refresh="onRefresh"
+            :success-text="channelItem.downPullSuccessText"
+            :success-duration="1000"
+            >
           <van-list
             v-model="channelItem.upPullLoading"
             :finished="channelItem.upPullFinished"
@@ -117,11 +122,30 @@ export default {
       this.activeChannel.upPullLoading = false
     },
     // 下拉刷新，如果有新数据，则是重置列表数据
-    onRefresh () {
-      console.log('onRefresh')
-      setTimeout(() => {
-        this.isLoading = false
-      }, 3000)
+    async onRefresh () {
+      const { activeChannel } = this
+      const timestamp = activeChannel.timestamp
+      // 使用最新时间戳去请求最新推荐的数据
+      activeChannel.timestamp = Date.now()
+      const data = await this.loadArticles()
+
+      // 如果有最新数据，将数据更新到频道文章中
+      if (data.results.length) {
+        activeChannel.articles = data.results
+
+        // 由于重置了时间戳，那么当前数据中的pre_timestamp 就是上拉获取下一页的时间戳
+        activeChannel.timestamp = data.pre_timestamp
+        activeChannel.downPullSuccessText = '更新成功'
+        // 当重置下拉刷新后数据没有占满屏幕，所以我们用onload再加载一页
+        this.onLoad()
+      } else {
+        // 如果没有最新数据，提示已是最新内容
+        activeChannel.downPullSuccessText = '已是最新数据'
+      }
+      // 下拉刷新结束，取消loading状态
+      activeChannel.downPullLoading = false
+      // 没有最新数据，将原来的用于请求下一页的时间戳恢复过来
+      activeChannel.timestamp = timestamp
     },
     async loadArticles () {
       const { id: channelId, timestamp } = this.activeChannel
