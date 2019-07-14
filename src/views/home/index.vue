@@ -1,11 +1,10 @@
 <template>
-  <div>
     <div class="home">
-      <van-nav-bar title="首页" fixed />
+      <van-nav-bar title="首页" fixed/>
       <van-tabs class="channel-tabs" v-model="activeChannelIndex">
-          <div slot="nav-right" class="wap-nav">
-            <van-icon name="wap-nav"/>
-          </div>
+          <div slot="nav-right" class="wap-nav" @click="isChannelShow = true">
+        <van-icon name="wap-nav" />
+      </div>
           <van-tab
             v-for="channelItem in channels"
             :key="channelItem.id"
@@ -32,23 +31,28 @@
           </van-pull-refresh>
         </van-tab>
       </van-tabs>
+      <!-- 频道管理组件 -->
+      <HomeChannel
+        v-model="isChannelShow"
+        :channels="channels"
+        :active-index="activeChannelIndex"/>
     </div>
-  </div>
 </template>
 
 <script>
 import { getUserChannels } from '@/api/channel'
 import { getArticles } from '@/api/article'
+import HomeChannel from './components/channel'
 export default {
   name: 'HomeIndex',
+  components: {
+    HomeChannel
+  },
   data () {
     return {
       activeChannelIndex: 0,
-      list: [],
-      loading: false,
-      finished: false,
-      isLoading: false,
-      channels: []
+      channels: [],
+      isChannelShow: true
     }
   },
   computed: {
