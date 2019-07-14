@@ -54,6 +54,14 @@ export default {
       return this.channels[this.activeChannelIndex]
     }
   },
+  watch: {
+    // 监视容器中的user用户
+    // 只要能this. 出来的都可以在这里监视
+    async '$store.state.user' () {
+      this.loadChannels()
+      this.activeChannel.upPullLoading = true
+    }
+  },
   created () {
     this.loadChannels()
   },
