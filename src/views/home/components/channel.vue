@@ -32,7 +32,7 @@
             class="text"
             :class="{ active: index === activeIndex && !isEdit }"
           >{{item.name}}</span>
-          <van-icon class="close-icon" v-show="isEdit" name="close" />
+          <van-icon class="close-icon" v-show="isEdit  && !aliveChannels.includes(item.name)" name="close" />
         </van-grid-item>
       </van-grid>
     </div>
@@ -86,7 +86,8 @@ export default {
   data () {
     return {
       allChannels: [], // 所有的频道列表
-      isEdit: false
+      isEdit: false,
+      aliveChannels: ['推荐']
     }
   },
   computed: {
@@ -155,7 +156,7 @@ export default {
         this.changeChannel(item, index)
       } else {
         // 编辑状态：删除频道
-        this.deleteChannel(item, index)
+        !this.aliveChannels.includes(item.name) && this.deleteChannel(item, index)
       }
     }
   }
